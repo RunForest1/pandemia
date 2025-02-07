@@ -13,8 +13,9 @@ export const Links = [
 
 export const Nav = () => {
   return (
-    <div className='flex gap-2'>
-        {Links.map(({text, icon}) => <Link icon = {icon} text = {text}/>)}
-    </div>
+    <nav className='hidden lg:flex gap-2'>
+        {Links.map(({text, icon}) => <Link key={text} icon = {icon} text = {text}/>)}
+    </nav>
+    
   )
 }

@@ -2,12 +2,22 @@
 @import "tailwindcss";
 
 #root {
-  background-color: black;
+  background-color: #0D0E0F;
 }
 
 @theme {
   --font-display: "Poppins", sans-serif; 
-
+  
+  --color-black1: #0D0E0F;
   --color-gray1: #9095A3;
   --color-gray3: #181D29;
+
+  
+  --breakpoint-lg: 90.1rem;
+  --breakpoint-md: 64rem;
+  --breakpoint-sm: 48rem;
+}
+
+.my-custom-background {
+  @apply bg-[url('https://s3-alpha-sig.figma.com/img/c556/9d7e/308b77a448114e7cc7cee5118ed0c123?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=XHWdbiRf6p5Uc6F5g9uYTlzKbDHbHG7tYeuT0UZfo32JYPMqjizI5z7GC0nJgj89OmtCrhzyWF91r-QGAawLZMAC~S7YYImk5LD9~uS3PaC5sneyN-34h3gB-mGBHZXM5FP4OViuxWQgeNJn4e05fWap593ggSD9sbmtsn8Go9nZpxcgzdnt-yXoZINu8bTYjcoWgflxZa5cbr9z6dNGtAnKK0CzOdbgsaFyNy-uiTX-RT4QIsIyNX4yQ92WFCm--lliQcelWOAAQyN4UoFIEx6rE~7q0YYbZWnX1XZ-jTN~XXwM9TBTZo8hCo4gjTUZdIDlmwxvnKnla-jIuJn8fQ__')] h-64 w-64;
 }
