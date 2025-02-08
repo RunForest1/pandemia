@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { OpenMenu } from "../../atoms/OpenMenu";
+import { OpenMenu } from "../../atoms/Icons/OpenMenu";
 
 import { LINKS } from "../Nav";
 import { Link } from "../../atoms/Link";
-import { Steam } from "../../atoms/Steam";
+import { Steam } from "../../atoms/Icons/Steam";
 
 
 export const MobileMenu = () => {

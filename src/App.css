@@ -3,6 +3,7 @@
 
 #root {
   background-color: #0D0E0F;
+  max-width: 100%;
 }
 
 @theme {
@@ -10,9 +11,10 @@
   
   --color-black1: #0D0E0F;
   --color-gray1: #9095A3;
+  --color-gray2: #111214;
   --color-gray3: #181D29;
   --color-red1: #EB422F;
-
+  --color-blue1: #0866FF;
   
   --breakpoint-lg: 90rem;
   --breakpoint-md: 64rem;

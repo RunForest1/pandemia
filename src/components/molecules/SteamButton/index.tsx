@@ -1,4 +1,4 @@
-import { Steam } from "../../atoms/Steam"
+import { Steam } from "../../atoms/Icons/Steam"
 
 export const SteamButton = () => {
   return (

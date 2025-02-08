@@ -1,8 +1,8 @@
-import { FaceBook } from '../../atoms/FaceBook';
-import { Instagramm } from '../../atoms/Instagramm';
+import { FaceBook } from '../../atoms/Icons/FaceBook';
+import { Instagramm } from '../../atoms/Icons/Instagramm';
 import { Link } from '../../atoms/Link';
-import { Twitter } from '../../atoms/Twitter';
-import { YouTube } from '../../atoms/YouTube/Index';
+import { Twitter } from '../../atoms/Icons/Twitter';
+import { YouTube } from '../../atoms/Icons/YouTube/Index';
 
 export const LINKS = [
     { text: 'Twitter', icon: <Twitter /> },

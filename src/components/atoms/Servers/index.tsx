@@ -1,5 +1,5 @@
 
-import { Online } from "../Online";
+import { Online } from "../Icons/Online";
 
 export interface ServerProps {
   name: string;

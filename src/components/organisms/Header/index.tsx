@@ -1,4 +1,4 @@
-import { Logo } from "../../atoms/Logo"
+import { Logo } from "../../atoms/Icons/Logo"
 import { Nav } from "../../molecules/Nav"
 import { MobileMenu } from "../../molecules/MobileMenu"
 import { SteamButton } from "../../molecules/SteamButton"
