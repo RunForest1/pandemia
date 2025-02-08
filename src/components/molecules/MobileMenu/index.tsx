@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { OpenMenu } from "../../atoms/OpenMenu";
 
-import { Links } from "../Nav";
+import { LINKS } from "../Nav";
 import { Link } from "../../atoms/Link";
 import { Steam } from "../../atoms/Steam";
 
@@ -39,7 +39,7 @@ export const MobileMenu = () => {
       >
         <nav className="flex flex-col items-start p-8 space-y-4">
           <div className="flex flex-col space-y-4 ">
-            {Links.map(({ text, icon }) => (
+            {LINKS.map(({ text, icon }) => (
               <Link key={text} icon={icon} text={text} />
             ))}
           </div>
