@@ -17,25 +17,39 @@ export const ShopBar = () => {
   return (
     <section className="mt-20 grid grid-cols-1 md:flex gap-8 items-center justify-between">
         <div className="order-last grid grid-cols-1 md:flex md:order-first gap-8">
-            <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-standard-label" sx={{ color: '#9095A3' }}>Тип</InputLabel>
+            <FormControl>
+                <InputLabel id="demo-simple-select-standard-label" sx={{
+                  color: '#9095A3',
+                  '&.Mui-focused': { //  <-- Добавлено
+                    color: '#9095A3', //  <-- Добавлено
+                  },
+                }}>Тип</InputLabel>
                 <Select
-                className=" font-display text-3xl bg-gray2 rounded-2xl"
+                className="min-w-3xs font-display text-3xl bg-gray2"
+                MenuProps={{  // <---  Добавлено
+                  PaperProps: {  // <---  Добавлено
+                    sx: {  // <---  Добавлено
+                      backgroundColor: '#111214',  // <-- Замените на нужный цвет
+                      color: '#9095A3',  // <--  Замените на нужный цвет текста (опционально)
+                    },
+                  },
+                }}
                 sx={{
-                    color: '#9095A3',
-                    '& .MuiSvgIcon-root': {
-                      color: '#9095A3', // Цвет стрелочки
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': { // Target the outline
-                      border: 'none',  // Remove the border
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': { // Remove border on hover
-                      border: 'none',
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { // Remove border on focus
-                      border: 'none',
-                    },
-                  }}
+                  color: '#9095A3',
+                  '& .MuiSvgIcon-root': {
+                    color: '#9095A3', // Цвет стрелочки
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': { // Target the outline
+                    border: 'none',  // Remove the border
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': { // Remove border on hover
+                    border: 'none',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { // Remove border on focus
+                    border: 'none',
+                  },
+                  
+                }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={type}
@@ -49,9 +63,22 @@ export const ShopBar = () => {
             </FormControl>
         
             <FormControl >
-                <InputLabel id="demo-simple-select-standard-label" sx={{ color: '#9095A3' }}>Сервер</InputLabel>
+                <InputLabel id="demo-simple-select-standard-label" sx={{
+                  color: '#9095A3',
+                  '&.Mui-focused': { //  <-- Добавлено
+                    color: '#9095A3', //  <-- Добавлено
+                  },
+                }}>Сервер</InputLabel>
                 <Select
-                className="min-w-3xs font-display text-3xl bg-gray2 "
+                className="min-w-3xs font-display text-3xl bg-gray2"
+                MenuProps={{  // <---  Добавлено
+                  PaperProps: {  // <---  Добавлено
+                    sx: {  // <---  Добавлено
+                      backgroundColor: '#111214',  // <-- Замените на нужный цвет
+                      color: '#9095A3',  // <--  Замените на нужный цвет текста (опционально)
+                    },
+                  },
+                }}
                 sx={{
                   color: '#9095A3',
                   '& .MuiSvgIcon-root': {
@@ -95,6 +122,15 @@ export const ShopBar = () => {
                     color: '#9095A3', // Цвет плейсхолдера
                 },
             },
+            '& .MuiOutlinedInput-notchedOutline': { // Target the outline
+                    border: 'none',  // Remove the border
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': { // Remove border on hover
+                    border: 'none',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { // Remove border on focus
+                    border: 'none',
+                  },
         }}
         slotProps={{
             input: {
