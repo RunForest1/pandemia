@@ -16,6 +16,7 @@
   --color-red1: #EB422F;
   --color-blue1: #0866FF;
   
+  --breakpoint-xl: 120rem;
   --breakpoint-lg: 90rem;
   --breakpoint-md: 64rem;
   --breakpoint-sm: 48rem;

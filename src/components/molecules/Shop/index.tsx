@@ -2,12 +2,14 @@ import { ShopBar } from "../../atoms/ShopBar"
 import { Card } from "../../atoms/Card";
 import { Niva } from "../../atoms/Icons/Niva";
 import { Gunter } from "../../atoms/Icons/Gunter";
+import { Sarka } from "../../atoms/Icons/Sarka";
+import { Volga } from "../../atoms/Icons/Volga";
 
 export const CARDS = [
-    {key: 1, name: 'Нива', description:'Описание товара', price: '159', png:<Niva/>},
-    {key: 2, name: 'Волга', description:'Описание товара', price: '169', png:<Gunter/>},
-    {key: 3, name: 'Сарка', description:'Описание товара', price: '139', png:<Niva/>},
-    {key: 4, name: 'Гюнтер', description:'Описание товара', price: '129', png:<Niva/>},
+    {key: 1, name: 'Нива', description:'Описание товара', price: 159, png:<Niva/>},
+    {key: 2, name: 'Волга', description:'Описание товара', price: 169, png:<Volga/>},
+    {key: 3, name: 'Сарка', description:'Описание товара', price: 139, png:<Sarka/>},
+    {key: 4, name: 'Гюнтер', description:'Описание товара', price: 129, png:<Gunter/>},
   ];
 
 

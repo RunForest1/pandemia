@@ -17,16 +17,25 @@ export const ShopBar = () => {
   return (
     <section className="mt-20 grid grid-cols-1 md:flex gap-8 items-center justify-between">
         <div className="order-last grid grid-cols-1 md:flex md:order-first gap-8">
-            <FormControl sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-standard-label" sx={{ color: '#9095A3' }}>Тип</InputLabel>
                 <Select
-                className="min-w-3xs font-display text-3xl bg-gray2 rounded-2xl"
+                className=" font-display text-3xl bg-gray2 rounded-2xl"
                 sx={{
                     color: '#9095A3',
                     '& .MuiSvgIcon-root': {
-                        color: '#9095A3', // Цвет стрелочки
+                      color: '#9095A3', // Цвет стрелочки
                     },
-                }}
+                    '& .MuiOutlinedInput-notchedOutline': { // Target the outline
+                      border: 'none',  // Remove the border
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { // Remove border on hover
+                      border: 'none',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { // Remove border on focus
+                      border: 'none',
+                    },
+                  }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={type}
@@ -39,15 +48,24 @@ export const ShopBar = () => {
                 </Select>
             </FormControl>
         
-            <FormControl sx={{ minWidth: 120 }}>
+            <FormControl >
                 <InputLabel id="demo-simple-select-standard-label" sx={{ color: '#9095A3' }}>Сервер</InputLabel>
                 <Select
                 className="min-w-3xs font-display text-3xl bg-gray2 "
                 sx={{
-                    color: '#9095A3',
-                    '& .MuiSvgIcon-root': {
-                        color: '#9095A3', // Цвет стрелочки
-                    },
+                  color: '#9095A3',
+                  '& .MuiSvgIcon-root': {
+                    color: '#9095A3', // Цвет стрелочки
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': { // Target the outline
+                    border: 'none',  // Remove the border
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': { // Remove border on hover
+                    border: 'none',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { // Remove border on focus
+                    border: 'none',
+                  },
                 }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
