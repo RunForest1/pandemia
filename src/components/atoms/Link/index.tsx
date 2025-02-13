@@ -7,7 +7,7 @@ interface LinkProps {
 
 export const Link: React.FC<LinkProps> = ({icon, text}) => {
   return (
-    <a href="#" className="text-gray1 font-display text-xm flex gap-4 py-4 px-5 hover:bg-gray3 duration-300 items-center justify-center rounded-xl">
+    <a href="#" className="text-gray1 font-display text-xm flex gap-4 py-2 px-6 hover:bg-gray3 duration-300 items-center justify-center rounded-xl">
         {icon}{text}
     </a>
   )

@@ -9,9 +9,9 @@ export interface ServerProps {
 
 export const Server: React.FC<ServerProps> = ({name, online, status}) => {
   return (
-    <div className="bg-black1/80 flex flex-col font-display p-6 rounded-4xl">
-      <span className="text-white text-xl md:text-2xl lg:text-4xl w-25 md:w-30 lg:w-40">{name}</span>
-      <span className="text-gray1 flex  text-sm lg:text-xl gap-3">Состояние: <span className={online < 150 ? (status ? "text-green-600" : "text-gray1") : "text-red1"}>{online < 150 ? (status ? "• Активный" : "• Выключен") : "• Переполнен"}</span></span>
+    <div className="bg-black1/80 flex flex-col font-display p-6 rounded-4xl w-4/5 sm:w-full">
+      <span className="text-white text-base md:text-2xl lg:text-4xl w-25 md:w-30 lg:w-40">{name}</span>
+      <span className="text-gray1 flex  text-xs sm:text-sm lg:text-xl gap-3">Состояние:  <span className={online < 150 ? (status ? "text-green-600" : "text-gray1") : "text-red1"}>{online < 150 ? (status ? "• Активный" : "• Выключен") : "• Переполнен"}</span></span>
       <span className="text-gray1 flex items-center gap-2 text-sm lg:text-xl"><Online/>Онлайн: <span className={`${online < 150 ? 'text-gray1': 'text-red1'}`}>{online} / 150</span></span>
     </div>
   )

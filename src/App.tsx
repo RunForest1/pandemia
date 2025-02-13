@@ -1,18 +1,15 @@
-import { Footer } from "./components/organisms/Footer"
-import { Header } from "./components/organisms/Header"
-import { Main } from "./components/organisms/Main"
-import { Wrapper } from "./components/templates/Wrapper"
+import { MainPage } from "./components/templates/MainPage"
+import { Profile } from "./components/templates/Profile"
+
+
 
 function App() {
 
 
   return (
     <>
-      <Wrapper>
-        <Header/>
-        <Main/>
-      </Wrapper>
-      <Footer/>
+      <MainPage/>
+      {/* <Profile/> */}
     </>
   )
 }

@@ -7,10 +7,10 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';
 
 export const LINKS = [
-    { text: 'Twitter', icon: <TwitterIcon sx={{ color: '#1D9BF0', fontSize: 45 }} />, },
-    { text: 'YouTube', icon: <YouTubeIcon  sx={{ color: '#FF0000', fontSize: 45, }} /> },
-    { text: 'Telegramm', icon: <TelegramIcon  sx={{ color: '#229ED9', fontSize: 45 }} /> },
-    { text: 'FaceBook', icon: <FacebookIcon  sx={{ color: '#0866FF', fontSize: 45 }}/> },
+    { text: 'Twitter', icon: <TwitterIcon sx={{ color: '#1D9BF0', fontSize: 32 }} />, },
+    { text: 'YouTube', icon: <YouTubeIcon  sx={{ color: '#FF0000', fontSize: 32, }} /> },
+    { text: 'Telegramm', icon: <TelegramIcon  sx={{ color: '#229ED9', fontSize: 32 }} /> },
+    { text: 'FaceBook', icon: <FacebookIcon  sx={{ color: '#0866FF', fontSize: 32 }}/> },
   ];
 
 export const Nav = () => {

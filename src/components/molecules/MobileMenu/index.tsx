@@ -1,12 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { OpenMenu } from "../../atoms/Icons/OpenMenu";
 
 import { LINKS } from "../Nav";
 import { Link } from "../../atoms/Link";
 import { Steam } from "../../atoms/Icons/Steam";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+interface MobileProps {
+  logged: boolean;
+}
 
-export const MobileMenu = () => {
+export const MobileMenu: React.FC<MobileProps> = ({logged}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -43,10 +47,17 @@ export const MobileMenu = () => {
               <Link key={text} icon={icon} text={text} />
             ))}
           </div>
+        {logged ? 
+        
+        <a href="#" className="flex items-center gap-2 bg-gray1/25 duration-300 py-2 px-6 rounded-xl">
+          <AccountCircleIcon sx={{ color: 'gray', fontSize: 40 }}/>
+          <p className="text-white font-display text-xl font-bold">NickName_01</p>
+        </a> : 
+        
         <a href="#" className="flex items-center gap-2 bg-gray1/25 duration-300 py-2 px-6 rounded-xl">
             <Steam/>
             <p className="text-white font-display text-xl ">Вход через <b>Steam</b></p>
-        </a>
+        </a>}
         </nav>
       </div>
     </div>

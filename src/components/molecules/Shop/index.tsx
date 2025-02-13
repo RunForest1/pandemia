@@ -17,7 +17,7 @@ export const Shop = () => {
   return (
     <section className="container">
         <ShopBar/>
-        <div className="flex flex-col items-center md:grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
+        <div className="flex flex-col items-center sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
           {CARDS.map(({key, name, description, price, png}) => <Card key={key} name={name} description={description} price={price} png={png}/>)}
           {CARDS.map(({key, name, description, price, png}) => <Card key={key} name={name} description={description} price={price} png={png}/>)}
           {CARDS.map(({key, name, description, price, png}) => <Card key={key} name={name} description={description} price={price} png={png}/>)}
