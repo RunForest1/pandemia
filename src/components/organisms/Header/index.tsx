@@ -10,11 +10,13 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({logged}) => {
   return (
-    <header className="flex items-center justify-between gap-4 px-4 pb-7 container mx-auto">
-      <Logo/>
-      <Nav/>
-      {logged ? <SteamButton /> : <ProfileButton/>}
-      <MobileMenu logged={true}/>
+    <header className="gap-4 p-4 mx-auto bg-black1">
+      <nav className="flex items-center justify-between container">
+        <Logo/>
+        <Nav/>
+        {logged ? <SteamButton /> : <ProfileButton/>}
+        <MobileMenu logged={true}/>
+      </nav>
     </header>
   )
 }
