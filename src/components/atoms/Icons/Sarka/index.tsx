@@ -1,4 +1,4 @@
-import sarka from'../../../../assets/images/sarka.svg';
+import sarka from'../../../../assets/images/Sarka.png';
 
 export const Sarka = () => {
   return (

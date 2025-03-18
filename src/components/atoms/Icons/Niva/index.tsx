@@ -1,4 +1,4 @@
-import niva from'../../../../assets/images/niva.svg';
+import niva from'../../../../assets/images/niva.png';
 
 export const Niva = () => {
   return (

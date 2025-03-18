@@ -1,7 +1,9 @@
-import gunter from '../../../../assets/images/gunter.svg'
+import gunter from '../../../../assets/images/Gunter.png';
 
 export const Gunter = () => {
-  return (
-    <div><img src={gunter} alt="gunter" /></div>
-  )
-}
+    return (
+        <>
+            <img src={gunter} alt="gunter" />
+        </>
+    );
+};

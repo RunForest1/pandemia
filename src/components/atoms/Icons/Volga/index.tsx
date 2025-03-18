@@ -1,4 +1,4 @@
-import volga from'../../../../assets/images/volga.svg';
+import volga from'../../../../assets/images/Volga.png';
 
 export const Volga = () => {
   return (
