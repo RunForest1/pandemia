@@ -3,19 +3,13 @@
 Магазин DayZ-серверов «Pandemia»: React + TypeScript + Vite (Tailwind CSS,
 MUI). Сейчас сайт — **полностью статическое приложение**: авторизация,
 баланс, корзина, заявки в поддержку и т.д. работают на `localStorage` в
-браузере, без обращений к серверу. Это сделано намеренно, чтобы сайт можно
-было развернуть на GitHub Pages (чистый статический хостинг без бэкенда).
-
-В репозитории также лежит рабочий Express-бэкенд (`server/`) с настоящей
-Steam OpenID-авторизацией и системой баланса — он не удалён и не сломан,
-просто пока не подключён к фронтенду. Подробности и как переключиться
-обратно на него — в конце файла.
+браузере, без обращений к серверу.
 
 ## Структура
 
 ```
 src/            — фронтенд (Vite + React + TS) — то, что деплоится
-server/         — бэкенд (Express + node:sqlite) — задел на будущее, отдельно не деплоится
+server/         — бэкенд (Express + node:sqlite) — задел на будущее.
 ```
 
 ## Быстрый старт
@@ -24,17 +18,6 @@ server/         — бэкенд (Express + node:sqlite) — задел на б�
 npm install
 npm run dev
 ```
-
-Откройте http://localhost:5173 — сайт полностью рабочий: вход (мгновенный,
-без реального Steam), баланс, магазин, корзина, профиль. Бэкенд запускать
-не нужно.
-
-## Деплой на GitHub Pages
-
-Репозиторий уже настроен на автодеплой: `.github/workflows/deploy-pages.yml`
-собирает `src/` и публикует `dist/` при каждом пуше в `main`. Единственное,
-что нужно сделать один раз в настройках репозитория на GitHub:
-
 **Settings → Pages → Source → GitHub Actions.**
 
 После этого сайт будет доступен на `https://<аккаунт>.github.io/pandemia/`.
@@ -51,19 +34,9 @@ npm run build:pages     # сборка с base=/pandemia/
 npm run preview:pages   # http://localhost:4173/pandemia/
 ```
 
-Поскольку GitHub Pages не умеет отдавать `index.html` на произвольные
-маршруты SPA (`/pandemia/profile` и т.п. вернули бы честный 404), в
-`public/404.html` лежит редирект-трюк
-([rafgraph/spa-github-pages](https://github.com/rafgraph/spa-github-pages)):
-404-страница кодирует путь в query-строку и отправляет на `index.html`, а
-скрипт в `index.html` декодирует его обратно до того, как React Router
-прочитает `location`. Проверено вручную эмуляцией поведения GitHub Pages —
-прямые ссылки на `/profile`, `/main` и корень работают.
-
 ## Бэкенд на будущее (`server/`)
 
-Если понадобится реальная Steam-авторизация и настоящий баланс на сервере
-(например, при переезде с GitHub Pages на хостинг с поддержкой Node.js):
+Если понадобится реальная Steam-авторизация и настоящий баланс на сервере:
 
 ```bash
 npm run server:install
@@ -85,12 +58,6 @@ npm run dev:full   # фронтенд (5173) + бэкенд (4000) вместе,
   настоящий провайдер (ЮKassa/CloudPayments/Robokassa), нужно заменить
   `POST /api/balance/topup` на создание платежа со статусом `pending` и
   подтверждение из вебхука.
-
-Чтобы фронтенд снова начал использовать этот бэкенд вместо localStorage,
-нужно вернуть `AuthProvider` (`src/auth/AuthProvider.tsx`) на вызовы
-`fetchCurrentUser`/`devLogin` или `STEAM_LOGIN_URL` из `src/api/auth.ts` и
-`topUpBalance`/`fetchBalanceHistory` из `src/api/balance.ts` — эти файлы
-никуда не делись и по-прежнему рабочие против `server/`.
 
 ## Дизайн
 
