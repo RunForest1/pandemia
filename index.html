@@ -1,13 +1,67 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/assets/images/logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PANDEMIA</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <link
+            rel="icon"
+            type="image/svg+xml"
+            href="./src/assets/images/logo.svg"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PANDEMIA</title>
+        <script>
+            (function () {
+                try {
+                    var theme = localStorage.getItem('pandemia.theme');
+                    if (theme !== 'dark' && theme !== 'light') {
+                        theme = window.matchMedia(
+                            '(prefers-color-scheme: light)',
+                        ).matches
+                            ? 'light'
+                            : 'dark';
+                    }
+                    document.documentElement.setAttribute('data-theme', theme);
+
+                    var locale = localStorage.getItem('pandemia.locale');
+                    if (locale !== 'ru' && locale !== 'en') {
+                        locale =
+                            navigator.language.toLowerCase().indexOf('en') === 0
+                                ? 'en'
+                                : 'ru';
+                    }
+                    document.documentElement.setAttribute('lang', locale);
+                } catch (e) {}
+            })();
+        </script>
+        <!--
+      GitHub Pages не умеет отдавать index.html на произвольные пути SPA
+      (например /pandemia/profile) — отдаёт 404. public/404.html ловит
+      такой запрос и редиректит сюда с исходным путём, закодированным в
+      query-строку. Этот скрипт декодирует его обратно и восстанавливает
+      настоящий URL через history.replaceState ДО того, как React Router
+      успеет прочитать location. См. https://github.com/rafgraph/spa-github-pages
+    -->
+        <script type="text/javascript">
+            (function (l) {
+                if (l.search[1] === '/') {
+                    var decoded = l.search
+                        .slice(1)
+                        .split('&')
+                        .map(function (s) {
+                            return s.replace(/~and~/g, '&');
+                        })
+                        .join('?');
+                    window.history.replaceState(
+                        null,
+                        '',
+                        l.pathname.slice(0, -1) + decoded + l.hash,
+                    );
+                }
+            })(window.location);
+        </script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>

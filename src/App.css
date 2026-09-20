@@ -1,29 +1,147 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
+:root {
+    color-scheme: dark;
+
+    --surface: #0a0b0d;
+    --surface-2: #131519;
+    --surface-3: #1b1e23;
+    --surface-hover: #20242a;
+    --border: #262a30;
+    --border-strong: #34393f;
+
+    --ink: #f4f6f5;
+    --ink-muted: #9aa3a0;
+    --ink-faint: #6b7280;
+
+    --brand: #b7ff3b;
+    --brand-strong: #96e01a;
+    --brand-soft: #c9ff6e;
+    --brand-ink: #0a0b0d;
+
+    --danger: #ff4b3e;
+    --danger-soft: #3a1512;
+    --warning: #ffb020;
+    --warning-soft: #3a2a0d;
+    --success: #3ddc84;
+
+    --steam: #66c0f4;
+    --steam-ink: #0a1622;
+
+    --accent: #f5d90a;
+    --accent-ink: #191600;
+
+    --hero-overlay-from: rgba(10, 11, 13, 0.35);
+    --hero-overlay-to: #0a0b0d;
+}
+
+:root[data-theme='light'] {
+    color-scheme: light;
+
+    --surface: #f4f6f2;
+    --surface-2: #ffffff;
+    --surface-3: #eaeee6;
+    --surface-hover: #e2e7dc;
+    --border: #dde3d6;
+    --border-strong: #c7cfbe;
+
+    --ink: #14171a;
+    --ink-muted: #4b5566;
+    --ink-faint: #6b7280;
+
+    --brand: #4c8a1b;
+    --brand-strong: #3c6e15;
+    --brand-soft: #5fa826;
+    --brand-ink: #ffffff;
+
+    --danger: #d6362b;
+    --danger-soft: #fbe4e2;
+    --warning: #b5750e;
+    --warning-soft: #fbecd3;
+    --success: #1f9d5c;
+
+    --steam: #1b6aa5;
+    --steam-ink: #ffffff;
+
+    --accent: #a87a00;
+    --accent-ink: #ffffff;
+
+    /* Полная непрозрачность фонового изображения hero в светлой теме — */
+    /* верхняя часть картинки не затемняется, плавный переход только внизу. */
+    --hero-overlay-from: rgba(244, 246, 242, 0);
+    --hero-overlay-to: #f4f6f2;
+}
+
 #root {
-    background-color: #0d0e0f;
+    background-color: var(--surface);
     max-width: 100%;
 }
 
+body {
+    background-color: var(--surface);
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 @theme {
-    --font-display: 'Poppins', sans-serif;
+    --font-display: 'Oswald', sans-serif;
+    --font-body: 'Inter', sans-serif;
 
-    --color-black1: #0d0e0f;
-    --color-black2: #111214;
-    --color-gray1: #9095a3;
-    --color-gray2: #111214;
-    --color-gray3: #181d29;
-    --color-red1: #eb422f;
-    --color-blue1: #0866ff;
+    --color-surface: var(--surface);
+    --color-surface-2: var(--surface-2);
+    --color-surface-3: var(--surface-3);
+    --color-surface-hover: var(--surface-hover);
+    --color-border: var(--border);
+    --color-border-strong: var(--border-strong);
 
-    --breakpoint-xl: 120rem;
-    --breakpoint-lg: 90rem;
-    --breakpoint-md: 64rem;
-    --breakpoint-sm: 48rem;
+    --color-ink: var(--ink);
+    --color-ink-muted: var(--ink-muted);
+    --color-ink-faint: var(--ink-faint);
+
+    --color-brand: var(--brand);
+    --color-brand-strong: var(--brand-strong);
+    --color-brand-soft: var(--brand-soft);
+    --color-brand-ink: var(--brand-ink);
+
+    --color-danger: var(--danger);
+    --color-danger-soft: var(--danger-soft);
+    --color-warning: var(--warning);
+    --color-warning-soft: var(--warning-soft);
+    --color-success: var(--success);
+
+    --color-steam: var(--steam);
+    --color-steam-ink: var(--steam-ink);
+
+    --color-accent: var(--accent);
+    --color-accent-ink: var(--accent-ink);
 }
 
 @utility container {
     margin-inline: auto;
-    padding-inline: 2rem;
+    padding-inline: 1rem;
+
+    @variant sm {
+        padding-inline: 1.5rem;
+    }
+
+    @variant lg {
+        padding-inline: 2rem;
+    }
+}
+
+@utility glass {
+    background-color: color-mix(in srgb, var(--surface-2) 70%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }

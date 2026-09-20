@@ -1,10 +1,29 @@
+import { Link as RouterLink } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useAuth } from '../../../auth/useAuth';
 
 export const ProfileButton = () => {
-  return (
-    <a href="#" className="hidden lg:flex items-center gap-2 hover:bg-gray3 duration-300 py-3 px-6 rounded-xl">
-      <AccountCircleIcon sx={{ color: 'gray', fontSize: 40 }}/>
-      <p className="text-white font-display text-xl font-bold">NickName_01</p>
-    </a>
-  )
-}
+    const { user } = useAuth();
+
+    return (
+        <RouterLink
+            to="/profile"
+            className="flex items-center gap-2 rounded-xl border border-border py-2 pl-2 pr-4 hover:bg-surface-hover duration-200"
+        >
+            {user?.avatarUrl ? (
+                <img
+                    src={user.avatarUrl}
+                    alt=""
+                    className="w-8 h-8 rounded-full"
+                />
+            ) : (
+                <AccountCircleIcon
+                    sx={{ color: 'var(--ink-faint)', fontSize: 32 }}
+                />
+            )}
+            <p className="font-body font-semibold text-sm text-ink">
+                {user?.nickname}
+            </p>
+        </RouterLink>
+    );
+};
