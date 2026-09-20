@@ -18,21 +18,6 @@ server/         — бэкенд (Express + node:sqlite) — задел на б�
 npm install
 npm run dev
 ```
-**Settings → Pages → Source → GitHub Actions.**
-
-После этого сайт будет доступен на `https://<аккаунт>.github.io/pandemia/`.
-
-Base-путь `/pandemia/` захардкожен в `vite.config.ts` (под текущее имя
-репозитория) и включается только при сборке с `GITHUB_PAGES=true` — сам
-workflow выставляет эту переменную, локальная разработка (`npm run dev`) её
-не видит и продолжает работать в корне.
-
-Проверить итоговую GitHub Pages сборку локально:
-
-```bash
-npm run build:pages     # сборка с base=/pandemia/
-npm run preview:pages   # http://localhost:4173/pandemia/
-```
 
 ## Бэкенд на будущее (`server/`)
 
