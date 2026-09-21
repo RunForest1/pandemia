@@ -1,145 +1,147 @@
 # Pandemia
 
-Сайт магазина DayZ-серверов «Pandemia»: витрина серверов, магазин
-внутриигровых предметов с корзиной, профиль игрока (баланс, история
-покупок, заявки в техподдержку), лента новостей из VK. Тёмная/светлая тема,
-переключение RU/EN.
+A storefront site for the "Pandemia" DayZ servers: a server list, an
+in-game item shop with a cart, a player profile (balance, purchase
+history, support tickets), and a news feed pulled from VK. Dark/light
+theme, RU/EN language switch.
 
-**Стек:** React 18 + TypeScript + Vite, Tailwind CSS 4, MUI.
+**Stack:** React 18 + TypeScript + Vite, Tailwind CSS 4, MUI.
 
-Сайт живёт на GitHub Pages: **https://runforest1.github.io/pandemia/**
+The site is live on GitHub Pages: **https://runforest1.github.io/pandemia/**
 
-## Как устроен проект: фронтенд и бэкенд
+## How the project is organized: frontend and backend
 
-Это репозиторий с двумя независимыми частями:
+This repository contains two independent parts:
 
 ```
-src/       — фронтенд. Единственное, что реально задеплоено на GitHub Pages.
-server/    — бэкенд (Express). В репозитории есть и рабочий, но никуда не
-             задеплоен и сайтом сейчас не используется — задел на будущее.
+src/       — frontend. The only part actually deployed to GitHub Pages.
+server/    — backend (Express). Present and fully working in the repo, but
+             not deployed anywhere and not used by the live site — a
+             foundation for later.
 ```
 
-### Фронтенд (`src/`) — то, что сейчас в проде
+### Frontend (`src/`) — what's currently in production
 
-Сайт собран как **полностью статическое** приложение: не делает запросов ни
-к какому серверу. Всё, что обычно требует бэкенда, эмулируется на клиенте
-через `localStorage`:
+The site is built as a **fully static** app: it makes no requests to any
+server. Everything that would normally need a backend is emulated on the
+client via `localStorage`:
 
-- **Вход через Steam** — вместо настоящего похода на steamcommunity.com
-  мгновенно логинит демо-пользователем и переносит в профиль
+- **Sign in with Steam** — instead of a real trip to steamcommunity.com, it
+  instantly logs in a demo user and takes you to the profile
   (`src/auth/AuthProvider.tsx`, `src/api/localAccount.ts`).
-- **Баланс и пополнение** — честно помечено в интерфейсе как тестовый режим;
-  сумма сразу «зачисляется», хранится локально в браузере.
-- **Корзина, история покупок, заявки в техподдержку, настройки профиля** —
-  тоже локальные (`src/cart/`, `src/api/localOrders.ts`,
-  `src/api/localTickets.ts`).
+- **Balance and top-ups** — honestly labeled in the UI as test mode; the
+  amount is "credited" immediately and stored locally in the browser.
+- **Cart, purchase history, support tickets, profile settings** — also
+  local (`src/cart/`, `src/api/localOrders.ts`, `src/api/localTickets.ts`).
 
-Такое решение и позволяет разместить сайт на GitHub Pages — там нет сервера,
-который мог бы что-то посчитать или сохранить в базу, поэтому вся «бизнес
-логика» сделана честной клиентской имитацией без обмана пользователя
-(везде, где это важно, явно написано «тестовый режим»).
+This is what makes it possible to host the site on GitHub Pages — there's
+no server there to compute anything or persist it to a database, so all the
+"business logic" is an honest client-side simulation that never misleads
+the user (anywhere it matters, the UI explicitly says "test mode").
 
-### Бэкенд (`server/`) — задел на будущее
+### Backend (`server/`) — a foundation for later
 
-Отдельный, полностью рабочий Express-сервер, который **не участвует** в
-текущем деплое на GitHub Pages (GitHub Pages вообще не умеет запускать
-серверный код — только отдаёт статические файлы). Он лежит в репозитории на
-случай переезда на хостинг с поддержкой Node.js:
+A separate, fully working Express server that **does not take part** in the
+current GitHub Pages deployment (GitHub Pages can't run server code at all
+— it only serves static files). It stays in the repo in case the project
+ever moves to a host that supports Node.js:
 
-- **Steam OpenID 2.0** (`server/src/auth/steam.ts`) — настоящий вход через
-  Steam: редирект на `steamcommunity.com`, проверка подписи ответа,
-  SteamID64, сессия на httpOnly JWT-cookie. Никнейм и аватар — через Steam
-  Web API (нужен бесплатный ключ с https://steamcommunity.com/dev/apikey в
-  `STEAM_API_KEY`) либо через публичный XML-профиль как резервный путь без
-  ключа.
-- **Баланс** (`server/src/routes/balance.ts`) — тоже пока заглушка без
-  реального платёжного провайдера (сумма сразу помечается оплаченной), но
-  уже с настоящим сервером, базой (`node:sqlite`) и API. Чтобы подключить
-  платёжного провайдера (ЮKassa/CloudPayments/Robokassa), нужно заменить
-  `POST /api/balance/topup` на создание платежа со статусом `pending` и
-  подтверждение из вебхука провайдера вместо мгновенной пометки `paid`.
+- **Steam OpenID 2.0** (`server/src/auth/steam.ts`) — a real Steam login:
+  redirect to `steamcommunity.com`, response signature verification,
+  SteamID64, a session on an httpOnly JWT cookie. Nickname and avatar come
+  from the Steam Web API (needs a free key from
+  https://steamcommunity.com/dev/apikey as `STEAM_API_KEY`) or, as a
+  fallback without a key, from the public XML profile.
+- **Balance** (`server/src/routes/balance.ts`) — also still a stub without a
+  real payment provider (the amount is marked paid immediately), but backed
+  by a real server, database (`node:sqlite`), and API. To wire up an actual
+  provider (YooKassa/CloudPayments/Robokassa), replace
+  `POST /api/balance/topup` so it creates a `pending` payment and confirms
+  it from the provider's webhook instead of marking it `paid` right away.
 
-Чтобы фронтенд снова начал использовать этот бэкенд вместо localStorage,
-нужно вернуть `AuthProvider` (`src/auth/AuthProvider.tsx`) на вызовы
-`fetchCurrentUser`/`devLogin`/`STEAM_LOGIN_URL` из `src/api/auth.ts` и
-`topUpBalance`/`fetchBalanceHistory` из `src/api/balance.ts` — эти файлы
-никуда не делись и по-прежнему рабочие против `server/`.
+To make the frontend use this backend again instead of localStorage, point
+`AuthProvider` (`src/auth/AuthProvider.tsx`) back at
+`fetchCurrentUser`/`devLogin`/`STEAM_LOGIN_URL` from `src/api/auth.ts` and
+`topUpBalance`/`fetchBalanceHistory` from `src/api/balance.ts` — those files
+are still there and still work against `server/`.
 
-## Локальный запуск
+## Running locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Откройте http://localhost:5173 — сайт полностью рабочий, бэкенд запускать
-не нужно.
+Open http://localhost:5173 — the site is fully functional; no need to run
+the backend.
 
-Если хочется поднять и бэкенд (для разработки/проверки серверной части):
+If you also want to run the backend (to develop or check the server side):
 
 ```bash
 npm run server:install
 cp server/.env.example server/.env
-# сгенерировать секрет сессии:
+# generate a session secret:
 openssl rand -hex 32
-# и вписать его в server/.env как SESSION_SECRET
+# and put it into server/.env as SESSION_SECRET
 
-npm run dev:full   # фронтенд (5173) + бэкенд (4000) вместе, с прокси /api и /auth
+npm run dev:full   # frontend (5173) + backend (4000) together, with a proxy for /api and /auth
 ```
 
-## Деплой на GitHub Pages
+## Deploying to GitHub Pages
 
-### Настройка (один раз)
+### One-time setup
 
-Автодеплой уже настроен через `.github/workflows/deploy-pages.yml` — он
-собирает `src/` и публикует результат при каждом пуше в `main`. Чтобы он
-реально заработал, в репозитории на GitHub нужно один раз переключить
-источник Pages на Actions:
+Auto-deploy is already configured via `.github/workflows/deploy-pages.yml`
+— it builds `src/` and publishes the result on every push to `main`. For it
+to actually take effect, you need to switch the repo's Pages source to
+Actions once on GitHub:
 
-1. Откройте репозиторий на github.com → вкладка **Settings**.
-2. В левом меню выберите **Pages**.
-3. В блоке **Build and deployment → Source** выберите **GitHub Actions**
-   (по умолчанию там стоит **Deploy from a branch** — это и есть причина
-   ошибки с `text/html` MIME-типом: GitHub в этом режиме отдаёт файлы
-   репозитория как есть, без сборки, поэтому браузер пытается напрямую
-   загрузить `src/main.tsx` — несобранный TypeScript-файл — как JS-модуль).
-4. Сохранять отдельно ничего не нужно — выбор в этом дропдауне применяется
-   сразу.
+1. Open the repository on github.com → the **Settings** tab.
+2. In the left sidebar, choose **Pages**.
+3. Under **Build and deployment → Source**, select **GitHub Actions**
+   (by default it's set to **Deploy from a branch** — that's exactly what
+   caused the `text/html` MIME type error: in that mode GitHub serves the
+   repository's files as-is, with no build step, so the browser tries to
+   load `src/main.tsx` — an unbuilt TypeScript file — directly as a JS
+   module).
+4. Nothing else to save — the choice in that dropdown takes effect
+   immediately.
 
-### Как убедиться, что всё задеплоилось
+### How to confirm it deployed
 
-1. Вкладка **Actions** в репозитории → должен быть жёлтый/зелёный запуск
-   `Deploy static site to GitHub Pages` (жёлтый — ещё собирается, зелёный —
-   готово, красный — упало, тогда открыть лог и разобраться, что сломалось).
-2. Если после переключения источника на Actions ещё не было ни одного
-   запуска — сделайте новый коммит или зайдите в **Actions → Deploy static
-   site to GitHub Pages → Run workflow**, чтобы запустить вручную.
-3. После зелёной галочки сайт доступен на
+1. The **Actions** tab in the repo → there should be a yellow/green run of
+   `Deploy static site to GitHub Pages` (yellow — still building, green —
+   done, red — failed, in which case open the log to see what broke).
+2. If there hasn't been a run yet after switching the source to Actions —
+   push a new commit, or go to **Actions → Deploy static site to GitHub
+   Pages → Run workflow** to trigger it manually.
+3. Once it's green, the site is live at
    **https://runforest1.github.io/pandemia/**.
 
-### Как это устроено технически
+### How it works under the hood
 
-- `vite.config.ts` — собирает сайт с `base: '/pandemia/'` (под имя этого
-  репозитория), но только когда workflow выставляет `GITHUB_PAGES=true`.
-  Локальная разработка (`npm run dev`) этого не видит и работает в корне.
-- GitHub Pages не умеет отдавать `index.html` на произвольные пути
-  одностраничного приложения (`/pandemia/profile` и т.п. вернули бы честную
-  404). `public/404.html` перехватывает такой запрос и редиректит на
-  `index.html` с исходным путём, закодированным в query-строку; скрипт в
-  `index.html` декодирует его обратно до того, как React Router прочитает
+- `vite.config.ts` builds the site with `base: '/pandemia/'` (matching this
+  repo's name), but only when the workflow sets `GITHUB_PAGES=true`. Local
+  development (`npm run dev`) doesn't see that and keeps working at the
+  root.
+- GitHub Pages can't serve `index.html` for arbitrary single-page-app
+  routes (`/pandemia/profile` and similar would get a genuine 404).
+  `public/404.html` catches that request and redirects to `index.html`
+  with the original path encoded into the query string; a script in
+  `index.html` decodes it back before React Router gets to read
   `location` ([rafgraph/spa-github-pages](https://github.com/rafgraph/spa-github-pages)).
 
-Проверить итоговую сборку локально, не дожидаясь деплоя:
+To check the final build locally without waiting on a deploy:
 
 ```bash
-npm run build:pages     # сборка с base=/pandemia/
+npm run build:pages     # build with base=/pandemia/
 npm run preview:pages   # http://localhost:4173/pandemia/
 ```
 
-## Дизайн
+## Design
 
-- Тема: светлая/тёмная, переключается кнопкой в шапке, хранится в
-  `localStorage`, уважает `prefers-color-scheme` при первом визите.
-- Язык: RU/EN, переключается кнопкой в шапке (`src/i18n`).
-- Палитра и типографика — `src/App.css` (токены) и `src/theme/palette.ts`
-  (зеркало для MUI-компонентов).
+- Theme: dark/light, toggled from a button in the header, persisted to
+  `localStorage`, respects `prefers-color-scheme` on first visit.
+- Language: RU/EN, toggled from a button in the header (`src/i18n`).
+- Palette and typography — `src/App.css` (tokens) and
+  `src/theme/palette.ts` (mirrored for MUI components).
