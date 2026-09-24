@@ -1,69 +1,93 @@
 # Pandemia
 
-A storefront site for the "Pandemia" DayZ servers: a server list, an
-in-game item shop with a cart, a player profile (balance, purchase
-history, support tickets), and a news feed pulled from VK. Dark/light
-theme, RU/EN language switch.
+*[Читать на русском](./README.ru.md)*
 
-**Stack:** React 18 + TypeScript + Vite, Tailwind CSS 4, MUI.
+A storefront for the "Pandemia" DayZ servers: a server list, an in-game item shop
+with a cart, a player profile (balance, purchase history, support tickets) and a
+news block with the community's latest posts. Dark/light theme, RU/EN language
+switch.
 
-The site is live on GitHub Pages: **https://runforest1.github.io/pandemia/**
+I built it as a portfolio project to show that I can take a real storefront from
+idea to a deployed site: full UX, a consistent UI, automated deployment, and a
+codebase that's ready to grow a backend without rewriting the interface.
+
+Live: <https://runforest1.github.io/pandemia/>
+
+## Why I built it
+
+I wanted a storefront with complete user flows — sign-in, balance, cart, server
+list, support — not a throwaway mockup. Two constraints shaped the design:
+
+1. **It has to work on free static hosting.** GitHub Pages can't run server code, so
+   the live site makes no requests to any server.
+2. **It must not be a dead end.** The UI is decoupled from the data source, so
+   connecting a real backend later means swapping the data layer, not rewriting the
+   interface.
+
+## Tech stack
+
+| Layer | Choice |
+|---|---|
+| Build | Vite |
+| Language | TypeScript |
+| UI | React 18, React Router, MUI |
+| Styles | Tailwind CSS 4 |
+| Backend (not deployed) | Express, SQLite (`node:sqlite`), JWT |
+| Hosting | GitHub Pages via GitHub Actions |
 
 ## How the project is organized: frontend and backend
 
-This repository contains two independent parts:
+The repository has two independent parts:
 
 ```
 src/       — frontend. The only part actually deployed to GitHub Pages.
-server/    — backend (Express). Present and fully working in the repo, but
-             not deployed anywhere and not used by the live site — a
-             foundation for later.
+server/    — backend (Express). Fully working in the repo, but not deployed
+             and not used by the live site — a foundation for later.
 ```
 
-### Frontend (`src/`) — what's currently in production
+### Frontend (`src/`) — what's in production
 
-The site is built as a **fully static** app: it makes no requests to any
-server. Everything that would normally need a backend is emulated on the
-client via `localStorage`:
+The site is **fully static**. Everything that would normally need a backend is
+emulated on the client via `localStorage`:
 
-- **Sign in with Steam** — instead of a real trip to steamcommunity.com, it
-  instantly logs in a demo user and takes you to the profile
-  (`src/auth/AuthProvider.tsx`, `src/api/localAccount.ts`).
-- **Balance and top-ups** — honestly labeled in the UI as test mode; the
-  amount is "credited" immediately and stored locally in the browser.
-- **Cart, purchase history, support tickets, profile settings** — also
-  local (`src/cart/`, `src/api/localOrders.ts`, `src/api/localTickets.ts`).
+- **Sign in with Steam** — instead of a real trip to steamcommunity.com, it logs in
+  a demo user and opens the profile (`src/auth/AuthProvider.tsx`,
+  `src/api/localAccount.ts`).
+- **Balance and top-ups** — labeled as test mode in the UI; the amount is credited
+  immediately and stored locally in the browser.
+- **Cart, purchase history, support tickets, profile settings** — also local
+  (`src/cart/`, `src/api/localOrders.ts`, `src/api/localTickets.ts`).
+- **News** — the latest posts of the project's VK community, copied into
+  `src/data/news.ts` by hand (there's no live feed).
+- **Server list** — status and player counts are set by hand for now, not read from
+  the servers.
 
-This is what makes it possible to host the site on GitHub Pages — there's
-no server there to compute anything or persist it to a database, so all the
-"business logic" is an honest client-side simulation that never misleads
-the user (anywhere it matters, the UI explicitly says "test mode").
+There's no server on GitHub Pages to compute anything or keep it in a database, so
+all the "business logic" is an honest client-side simulation, and anywhere it
+matters the UI says it's test mode.
 
 ### Backend (`server/`) — a foundation for later
 
-A separate, fully working Express server that **does not take part** in the
-current GitHub Pages deployment (GitHub Pages can't run server code at all
-— it only serves static files). It stays in the repo in case the project
-ever moves to a host that supports Node.js:
+A separate, working Express server that takes no part in the GitHub Pages
+deployment. I keep it in the repo for the day the project moves to a host that runs
+Node.js:
 
-- **Steam OpenID 2.0** (`server/src/auth/steam.ts`) — a real Steam login:
-  redirect to `steamcommunity.com`, response signature verification,
-  SteamID64, a session on an httpOnly JWT cookie. Nickname and avatar come
-  from the Steam Web API (needs a free key from
-  https://steamcommunity.com/dev/apikey as `STEAM_API_KEY`) or, as a
-  fallback without a key, from the public XML profile.
-- **Balance** (`server/src/routes/balance.ts`) — also still a stub without a
-  real payment provider (the amount is marked paid immediately), but backed
-  by a real server, database (`node:sqlite`), and API. To wire up an actual
-  provider (YooKassa/CloudPayments/Robokassa), replace
-  `POST /api/balance/topup` so it creates a `pending` payment and confirms
-  it from the provider's webhook instead of marking it `paid` right away.
+- **Steam OpenID 2.0** (`server/src/auth/steam.ts`) — a real Steam login: redirect
+  to `steamcommunity.com`, response signature verification, SteamID64, a session on
+  an httpOnly JWT cookie. Nickname and avatar come from the Steam Web API (a free
+  key from <https://steamcommunity.com/dev/apikey> as `STEAM_API_KEY`) or, without a
+  key, from the public XML profile as a fallback.
+- **Balance** (`server/src/routes/balance.ts`) — still a stub without a payment
+  provider (the amount is marked paid immediately), but backed by a real server, a
+  database and an API. To wire up a provider (YooKassa/CloudPayments/Robokassa),
+  `POST /api/balance/topup` should create a `pending` payment and confirm it from
+  the provider's webhook instead of marking it `paid` right away.
 
-To make the frontend use this backend again instead of localStorage, point
+To make the frontend use this backend instead of `localStorage`, point
 `AuthProvider` (`src/auth/AuthProvider.tsx`) back at
 `fetchCurrentUser`/`devLogin`/`STEAM_LOGIN_URL` from `src/api/auth.ts` and
-`topUpBalance`/`fetchBalanceHistory` from `src/api/balance.ts` — those files
-are still there and still work against `server/`.
+`topUpBalance`/`fetchBalanceHistory` from `src/api/balance.ts` — those files are
+still there and still work against `server/`.
 
 ## Running locally
 
@@ -72,10 +96,10 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 — the site is fully functional; no need to run
-the backend.
+Open <http://localhost:5173> — the site is fully functional, the backend isn't
+needed.
 
-If you also want to run the backend (to develop or check the server side):
+To run the backend as well (to work on or check the server side):
 
 ```bash
 npm run server:install
@@ -84,64 +108,72 @@ cp server/.env.example server/.env
 openssl rand -hex 32
 # and put it into server/.env as SESSION_SECRET
 
-npm run dev:full   # frontend (5173) + backend (4000) together, with a proxy for /api and /auth
+npm run dev:full   # frontend (5173) + backend (4000), with a proxy for /api and /auth
 ```
 
-## Deploying to GitHub Pages
+The backend needs Node.js ≥ 22.5 (it uses the built-in `node:sqlite`).
 
-### One-time setup
-
-Auto-deploy is already configured via `.github/workflows/deploy-pages.yml`
-— it builds `src/` and publishes the result on every push to `main`. For it
-to actually take effect, you need to switch the repo's Pages source to
-Actions once on GitHub:
-
-1. Open the repository on github.com → the **Settings** tab.
-2. In the left sidebar, choose **Pages**.
-3. Under **Build and deployment → Source**, select **GitHub Actions**
-   (by default it's set to **Deploy from a branch** — that's exactly what
-   caused the `text/html` MIME type error: in that mode GitHub serves the
-   repository's files as-is, with no build step, so the browser tries to
-   load `src/main.tsx` — an unbuilt TypeScript file — directly as a JS
-   module).
-4. Nothing else to save — the choice in that dropdown takes effect
-   immediately.
-
-### How to confirm it deployed
-
-1. The **Actions** tab in the repo → there should be a yellow/green run of
-   `Deploy static site to GitHub Pages` (yellow — still building, green —
-   done, red — failed, in which case open the log to see what broke).
-2. If there hasn't been a run yet after switching the source to Actions —
-   push a new commit, or go to **Actions → Deploy static site to GitHub
-   Pages → Run workflow** to trigger it manually.
-3. Once it's green, the site is live at
-   **https://runforest1.github.io/pandemia/**.
-
-### How it works under the hood
-
-- `vite.config.ts` builds the site with `base: '/pandemia/'` (matching this
-  repo's name), but only when the workflow sets `GITHUB_PAGES=true`. Local
-  development (`npm run dev`) doesn't see that and keeps working at the
-  root.
-- GitHub Pages can't serve `index.html` for arbitrary single-page-app
-  routes (`/pandemia/profile` and similar would get a genuine 404).
-  `public/404.html` catches that request and redirects to `index.html`
-  with the original path encoded into the query string; a script in
-  `index.html` decodes it back before React Router gets to read
-  `location` ([rafgraph/spa-github-pages](https://github.com/rafgraph/spa-github-pages)).
-
-To check the final build locally without waiting on a deploy:
+Other scripts:
 
 ```bash
-npm run build:pages     # build with base=/pandemia/
-npm run preview:pages   # http://localhost:4173/pandemia/
+npm run build          # production build, base "/"
+npm run build:pages    # production build, base "/pandemia/" — for GitHub Pages
+npm run preview        # preview the "/" build
+npm run preview:pages  # preview the Pages build at http://localhost:4173/pandemia/
+npm run lint           # eslint
+```
+
+## Project structure
+
+```
+src/
+  components/             # atomic design: atoms / molecules / organisms / templates
+  auth/                   # AuthProvider, RequireAuth, useAuth
+  cart/                   # CartProvider, useCart
+  api/                    # localStorage emulation + client for the real backend
+  i18n/                   # RU/EN dictionary, LocaleProvider, useTranslation
+  theme/                  # ThemeProvider, palette shared with MUI
+  data/                   # news, products
+  types/
+server/                   # Express backend (not deployed)
+public/                   # 404.html for the SPA fallback on GitHub Pages
 ```
 
 ## Design
 
-- Theme: dark/light, toggled from a button in the header, persisted to
-  `localStorage`, respects `prefers-color-scheme` on first visit.
-- Language: RU/EN, toggled from a button in the header (`src/i18n`).
-- Palette and typography — `src/App.css` (tokens) and
-  `src/theme/palette.ts` (mirrored for MUI components).
+- **Theme:** dark/light, toggled from the header, persisted to `localStorage`,
+  respects `prefers-color-scheme` on the first visit.
+- **Language:** RU/EN, toggled from the header (`src/i18n`).
+- **Palette and typography:** tokens in `src/App.css`, mirrored for MUI components in
+  `src/theme/palette.ts`.
+
+## Deploying to GitHub Pages
+
+Auto-deploy is configured in `.github/workflows/deploy-pages.yml`: every push to
+`main` builds `src/` and publishes the result. The one manual step is switching the
+Pages source once: **Settings → Pages → Build and deployment → Source → GitHub
+Actions**. In the default "Deploy from a branch" mode GitHub serves the repo files
+as-is with no build, and the browser tries to load the unbuilt `src/main.tsx` — that
+is what produces the `text/html` MIME type error.
+
+To confirm it deployed, open the **Actions** tab: a green run of
+`Deploy static site to GitHub Pages` means the site is live. If there's no run yet
+after switching the source, push a commit or start the workflow manually via
+**Run workflow**.
+
+How it works under the hood:
+
+- `vite.config.ts` builds with `base: '/pandemia/'` (the repo name) only when the
+  workflow sets `GITHUB_PAGES=true`; local development keeps working at the root.
+- GitHub Pages can't serve `index.html` for arbitrary SPA routes
+  (`/pandemia/profile` would get a real 404). `public/404.html` catches that request
+  and redirects to `index.html` with the original path encoded in the query string;
+  a script in `index.html` decodes it back before React Router reads `location`
+  ([rafgraph/spa-github-pages](https://github.com/rafgraph/spa-github-pages)).
+
+## What's next
+
+Real-time server monitoring is the next step: the status and player counts in the
+server list are set by hand right now, and it makes sense to wire them up once there
+is a backend to hook them to. After that — a real payment provider on the
+`server/` side and switching the frontend to it.
